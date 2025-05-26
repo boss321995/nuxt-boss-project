@@ -11,7 +11,15 @@ export default {
     './server/**/*.{js,ts}'
   ],
   theme: {
-    extend: {}
+    extend: {
+       colors: {
+        'soft-gray': '#F5F5F5',     // เทาอ่อน
+        'mid-gray':  '#D1D5DB',     // เทากลาง
+        'soft-yellow':'#FEF9C3',    // เหลืองอ่อน
+        'mid-yellow':'#FCD34D',     // เหลืองกลาง
+        'deep-yellow':'#FBBF24',    // เหลืองเข้ม
+      }
+    }
   },
   plugins: []
 }

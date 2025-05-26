@@ -1,38 +1,39 @@
 <template>
-  <div class="min-h-screen bg-gray-100 p-6">
-    <div class="max-w-4xl mx-auto bg-white shadow rounded-lg p-8">
-      <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
-      <p v-if="error" class="text-red-500 mb-4">{{ error }}</p>
-      <div v-else-if="data">
-        <p>สวัสดี User ID: <strong>{{ data.userId }}</strong></p>
-        <!-- ใส่เนื้อหา dashboard เพิ่มเติมตรงนี้ -->
-      </div>
-      <div v-else class="text-gray-500">กำลังโหลดข้อมูล...</div>
-      <button
-        @click="logout"
-        class="mt-6 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-      >
-        Logout
-      </button>
+  <section class="p-6 bg-soft-gray min-h-screen">
+    <h1 class="text-3xl font-bold text-deep-yellow mb-6">Dashboard</h1>
+
+    <!-- สรุปสถิติ -->
+    <div class="grid grid-cols-4 gap-6 mb-8">
+      <!-- ... your cards ... -->
     </div>
-  </div>
+
+    <!-- ตารางสินค้า -->
+    <h2 class="text-xl mb-4">รายการสินค้า</h2>
+    <InventoryTable :data="materials" />
+
+    <!-- Stock Entries -->
+    <h2 class="text-xl mt-8 mb-4">Stock Entries</h2>
+    <StockTable :data="stockEntries" />
+
+    <!-- Requests -->
+    <h2 class="text-xl mt-8 mb-4">Requests</h2>
+    <RequestTable :data="requests" />
+  </section>
 </template>
 
 <script setup lang="ts">
-// บังคับใช้ middleware auth ก่อนเข้าเพจนี้
-definePageMeta({
-  middleware: 'auth'
+import { ref, onMounted } from 'vue'
+import InventoryTable from '@/components/InventoryTable.vue'
+import StockTable     from '@/components/StockTable.vue'
+import RequestTable   from '@/components/RequestTable.vue'
+
+const materials    = ref([])
+const stockEntries = ref([])
+const requests     = ref([])
+
+onMounted(async () => {
+  materials.value    = await $fetch('/api/materials')
+  stockEntries.value = await $fetch('/api/stock-entries')
+  requests.value     = await $fetch('/api/requests')
 })
-
-import { useRouter } from 'vue-router'
-import { useFetch } from '#app'
-
-const { data, error } = await useFetch('/api/me')
-const router = useRouter()
-
-function logout() {
-  // ลบ cookie แล้วไปหน้า login
-  useCookie('access_token').value = null
-  router.push('/login')
-}
 </script>
