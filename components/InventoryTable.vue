@@ -109,7 +109,7 @@ const sortDesc = ref(false)
 const categoryMap: Record<string,string> = {
   plumbing: 'ประปา',
   electrical: 'ไฟฟ้า',
-  office_supplies: 'เครื่องเขียน',
+  office_supplies: 'อุปกรณ์ออฟฟิศ',
   air: 'ปรับอากาศ'
 }
 

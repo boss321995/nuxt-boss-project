@@ -66,7 +66,8 @@ async function onSubmit() {
   try {
     const res = await $fetch('/api/login', {
       method: 'POST',
-      body: { username: username.value, password: password.value }
+      body: { username: username.value, password: password.value },
+      credentials: 'include'
     })
     console.log('✅ login OK', res)
     await router.push('/dashboard')

@@ -207,6 +207,7 @@ INSERT IGNORE INTO `request_material`
 VALUES
   (1,4,'A68012025000053',2,'pending','2025-02-05 02:14:13',NULL,NULL);
 
+
 -- 7) บันทึกเวอร์ชันใน schema_migrations
 INSERT INTO schema_migrations(version)
 VALUES('004_seed_academy_data')

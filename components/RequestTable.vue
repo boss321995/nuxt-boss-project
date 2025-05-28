@@ -1,7 +1,7 @@
 <template>
   <ClientOnly>
     <!-- v-if เช็ก mounted ด้วย จะช่วยเลี่ยง error -->
-    <DataTable
+    <EasyDataTable
       v-if="isClient"
       :headers="columns"
       :items="data"
