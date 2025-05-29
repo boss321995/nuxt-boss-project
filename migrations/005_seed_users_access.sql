@@ -10,6 +10,7 @@ VALUES
 (4, '25901237', '$2y$10$VgYMg3i26bp7ksM3T/4YlOueF4qTk1NhA9hzjluvLcFgCYRBk0MCi', 'customer',   'plumbing,electrical,air'),
 (5, '13715985', '$2y$10$oXW1OLxInIdWBffxEFYySeiiRVHLMKqQW/4og/eIE2VD6FrxrWNMu', 'supervisor', 'office_supplies');
 
+
 -- บันทึกเวอร์ชันให้ runner รู้ว่า 005 รันแล้ว
 INSERT INTO schema_migrations
     (version)

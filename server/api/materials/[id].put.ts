@@ -1,10 +1,9 @@
-import mysql from 'mysql2/promise'
 import { defineEventHandler, readBody, createError } from 'h3'
+import mysql from 'mysql2/promise'
 
 export default defineEventHandler(async (event) => {
-  const id = event.context.params.id
-  const { quantity } = await readBody<{ quantity: number }>(event)
-  if (quantity == null) throw createError({ statusCode: 400, statusMessage: 'Missing quantity' })
+  const { id } = event.context.params
+  const { name, quantity, category } = await readBody<{ name: string; quantity: number; category: string }>(event)
 
   const config = useRuntimeConfig()
   const conn = await mysql.createConnection({
@@ -14,11 +13,25 @@ export default defineEventHandler(async (event) => {
     database: config.dbName
   })
 
-  // อัปเดตจำนวน
+  // 1️⃣ Lookup the ID of the category by its name
+  const [cats] = await conn.query(
+    'SELECT category_id FROM material_categories WHERE category_name = ?',
+    [category]
+  ) as any[]
+  if (!cats.length) {
+    await conn.end()
+    throw createError({ statusCode: 400, statusMessage: 'Invalid category' })
+  }
+  const categoryId = cats[0].category_id
+
+  // 2️⃣ Update all three fields
   await conn.execute(
-    'UPDATE materials SET quantity = ? WHERE material_id = ?',
-    [quantity, id]
+    `UPDATE materials
+     SET material_name = ?, quantity = ?, category_id = ?
+     WHERE material_id  = ?`,
+    [ name, quantity, categoryId, id ]
   )
+
   await conn.end()
-  return { success: true }
+  return { message: 'Material updated successfully' }
 })

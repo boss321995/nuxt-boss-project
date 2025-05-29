@@ -52,24 +52,33 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: 'blank'
+})
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-
+interface User { username: string; role: string }
+const currentUser = useState<User|null>('currentUser')
 const username = ref('')
 const password = ref('')
 const error = ref<string|null>(null)
 const router = useRouter()
-
+const form = reactive({ username: '', password: '' })
 async function onSubmit() {
   console.log('🔧 onSubmit invoked', username.value, password.value)
   error.value = null
   try {
-    const res = await $fetch('/api/login', {
-      method: 'POST',
-      body: { username: username.value, password: password.value },
-      credentials: 'include'
-    })
+    // เรียก API /api/login จะคืน { userId, username, role }
+   const res = await $fetch<{ username: string; role: string }>('/api/login', {
+  method: 'POST',
+  credentials: 'include',
+  body: {
+    username: username.value,
+    password: password.value
+  }
+})
     console.log('✅ login OK', res)
+     currentUser.value = { username: res.username, role: res.role }
     await router.push('/dashboard')
     console.log('🚀 router.push to /dashboard')
   } catch (e: any) {

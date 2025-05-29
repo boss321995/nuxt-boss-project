@@ -22,6 +22,7 @@
 </template>
 
 <script setup lang="ts">
+
 import { ref, onMounted } from 'vue'
 import InventoryTable from '@/components/InventoryTable.vue'
 import StockTable     from '@/components/StockTable.vue'

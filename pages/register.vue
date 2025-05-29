@@ -94,6 +94,9 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: 'blank'
+})
 import { ref } from "vue";
 import { navigateTo } from "#app";
 import { EyeIcon, EyeOffIcon } from "lucide-vue-next";

@@ -1,21 +1,14 @@
-<template>
-  <section class="p-6">
-    <h1 class="text-2xl font-bold mb-4">โปรไฟล์ของฉัน</h1>
-    <p>สวัสดี, {{ userName }}!</p>
-  </section>
-</template>
+<!-- pages/logout.vue -->
+<template><div>กำลังออกจากระบบ…</div></template>
 
-<script setup lang="ts">
-// หากมีระบบล็อกอินไว้แล้ว คุณอาจจะดึงข้อมูล user จาก API /api/me
-import { ref, onMounted } from 'vue'
-const userName = ref('แขกผู้เยี่ยมชม')
+<script setup>
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 onMounted(async () => {
-  try {
-    const me = await $fetch<{ userId: number; username: string }>('/api/me')
-    userName.value = me.username
-  } catch {
-    userName.value = 'แขกผู้เยี่ยมชม'
-  }
+  await $fetch('/api/logout', { method: 'POST' })
+  router.replace('/login')
 })
 </script>
